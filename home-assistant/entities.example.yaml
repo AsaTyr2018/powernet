@@ -1,0 +1,41 @@
+# Copy this file to entities.yaml and replace the values with your own
+# Home Assistant entity IDs.
+
+pv_total: sensor.your_inverter_pv_total_power
+pv_string_1: sensor.your_inverter_pv1_power
+pv_string_2: sensor.your_inverter_pv2_power
+pv_string_3: sensor.your_inverter_pv3_power
+
+load_power: sensor.your_home_load_power
+grid_import: sensor.your_grid_import_power
+grid_export: sensor.your_grid_export_power
+
+battery_charge: sensor.your_battery_charge_power
+battery_discharge: sensor.your_battery_discharge_power
+battery_soc: sensor.your_battery_state_of_charge
+
+solar_energy_today: sensor.your_solar_energy_today
+load_energy_today: sensor.your_home_energy_today
+grid_import_energy_today: sensor.your_grid_import_energy_today
+grid_export_energy_today: sensor.your_grid_export_energy_today
+battery_charge_energy_today: sensor.your_battery_charge_energy_today
+battery_discharge_energy_today: sensor.your_battery_discharge_energy_today
+
+spot_price_now: sensor.your_spot_price_now
+spot_price_next: sensor.your_spot_price_next
+spot_price_low: sensor.your_spot_price_low_today
+spot_price_high: sensor.your_spot_price_high_today
+monthly_grid_cost: sensor.your_monthly_grid_cost
+
+solar_forecast_now: sensor.your_solar_forecast_power_now
+solar_forecast_current_hour: sensor.your_solar_forecast_current_hour
+solar_forecast_next_hour: sensor.your_solar_forecast_next_hour
+solar_forecast_today: sensor.your_solar_forecast_today
+solar_forecast_tomorrow: sensor.your_solar_forecast_tomorrow
+
+weather_entity: weather.your_home
+sun_entity: sun.sun
+
+inverter_state: sensor.your_inverter_state
+inverter_temperature: sensor.your_inverter_temperature
+battery_temperature: sensor.your_battery_temperature

@@ -1,0 +1,8 @@
+entities.yaml
+energy-solar-dashboard.json
+*.local.json
+*.secret*
+.secret*
+__pycache__/
+.DS_Store
+Thumbs.db

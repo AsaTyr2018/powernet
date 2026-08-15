@@ -1,0 +1,747 @@
+{
+  "title": "Energy & Solar",
+  "views": [
+    {
+      "title": "Overview",
+      "path": "solar",
+      "icon": "mdi:home-lightning-bolt",
+      "type": "sections",
+      "max_columns": 4,
+      "dense_section_placement": true,
+      "sections": [
+        {
+          "type": "grid",
+          "column_span": 2,
+          "cards": [
+            {
+              "type": "heading",
+              "heading": "Live power flow",
+              "heading_style": "title",
+              "icon": "mdi:transmission-tower"
+            },
+            {
+              "type": "custom:power-flow-card-plus",
+              "grid_options": {
+                "columns": "full",
+                "rows": 7
+              },
+              "clickable_entities": true,
+              "display_zero_lines": true,
+              "use_new_flow_rate_model": true,
+              "watt_threshold": 1000,
+              "w_decimals": 0,
+              "kw_decimals": 2,
+              "min_flow_rate": 0.75,
+              "max_flow_rate": 6,
+              "max_expected_power": 10000,
+              "entities": {
+                "solar": {
+                  "entity": "{{PV_TOTAL}}",
+                  "name": "Solar",
+                  "display_zero_state": true,
+                  "color_icon": true
+                },
+                "battery": {
+                  "entity": {
+                    "consumption": "{{BATTERY_CHARGE}}",
+                    "production": "{{BATTERY_DISCHARGE}}"
+                  },
+                  "state_of_charge": "{{BATTERY_SOC}}",
+                  "name": "Battery",
+                  "color_circle": "color_dynamically",
+                  "display_state": "two_way"
+                },
+                "grid": {
+                  "entity": {
+                    "consumption": "{{GRID_IMPORT}}",
+                    "production": "{{GRID_EXPORT}}"
+                  },
+                  "name": "Grid",
+                  "color_circle": "color_dynamically",
+                  "display_state": "two_way"
+                },
+                "home": {
+                  "entity": "{{LOAD_POWER}}",
+                  "name": "Home",
+                  "override_state": true
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "grid",
+          "column_span": 2,
+          "cards": [
+            {
+              "type": "heading",
+              "heading": "Today",
+              "heading_style": "title",
+              "icon": "mdi:calendar-today"
+            },
+            {
+              "type": "tile",
+              "entity": "{{SOLAR_ENERGY_TODAY}}",
+              "name": "Solar production",
+              "icon": "mdi:solar-power",
+              "color": "amber",
+              "vertical": false
+            },
+            {
+              "type": "tile",
+              "entity": "{{LOAD_ENERGY_TODAY}}",
+              "name": "Home consumption",
+              "icon": "mdi:home-lightning-bolt",
+              "color": "blue",
+              "vertical": false
+            },
+            {
+              "type": "tile",
+              "entity": "{{GRID_EXPORT_ENERGY_TODAY}}",
+              "name": "Grid export",
+              "icon": "mdi:transmission-tower-export",
+              "color": "amber",
+              "vertical": false
+            },
+            {
+              "type": "tile",
+              "entity": "{{GRID_IMPORT_ENERGY_TODAY}}",
+              "name": "Grid import",
+              "icon": "mdi:transmission-tower-import",
+              "color": "blue",
+              "vertical": false
+            },
+            {
+              "type": "tile",
+              "entity": "{{BATTERY_CHARGE_ENERGY_TODAY}}",
+              "name": "Battery charged",
+              "icon": "mdi:battery-arrow-up",
+              "color": "teal",
+              "vertical": false
+            },
+            {
+              "type": "tile",
+              "entity": "{{BATTERY_DISCHARGE_ENERGY_TODAY}}",
+              "name": "Battery discharged",
+              "icon": "mdi:battery-arrow-down",
+              "color": "green",
+              "vertical": false
+            },
+            {
+              "type": "tile",
+              "entity": "{{BATTERY_SOC}}",
+              "name": "Battery state",
+              "icon": "mdi:battery",
+              "color": "green",
+              "vertical": false
+            },
+            {
+              "type": "tile",
+              "entity": "{{INVERTER_STATE}}",
+              "name": "Inverter state",
+              "icon": "mdi:solar-power-variant",
+              "color": "green",
+              "vertical": false
+            }
+          ]
+        },
+        {
+          "type": "grid",
+          "column_span": 2,
+          "cards": [
+            {
+              "type": "custom:apexcharts-card",
+              "section_mode": true,
+              "grid_options": {
+                "columns": "full",
+                "rows": 6
+              },
+              "graph_span": "24h",
+              "update_interval": "1min",
+              "stacked": true,
+              "header": {
+                "show": true,
+                "title": "Solar and home load - 24 hours",
+                "show_states": true,
+                "colorize_states": true,
+                "standard_format": true
+              },
+              "yaxis": [
+                {
+                  "decimals": 1,
+                  "apex_config": {
+                    "title": {
+                      "text": "kW"
+                    }
+                  }
+                }
+              ],
+              "apex_config": {
+                "chart": {
+                  "height": 280
+                },
+                "plotOptions": {
+                  "bar": {
+                    "columnWidth": "85%",
+                    "borderRadius": 2
+                  }
+                }
+              },
+              "series": [
+                {
+                  "entity": "{{PV_TOTAL}}",
+                  "name": "Solar",
+                  "type": "column",
+                  "color": "#fbc02d",
+                  "stack_group": "power",
+                  "group_by": {
+                    "func": "avg",
+                    "duration": "15min",
+                    "fill": "zero"
+                  }
+                },
+                {
+                  "entity": "{{LOAD_POWER}}",
+                  "name": "Home load",
+                  "type": "column",
+                  "color": "#2196f3",
+                  "invert": true,
+                  "stack_group": "power",
+                  "group_by": {
+                    "func": "avg",
+                    "duration": "15min",
+                    "fill": "zero"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "grid",
+          "column_span": 2,
+          "cards": [
+            {
+              "type": "custom:apexcharts-card",
+              "section_mode": true,
+              "grid_options": {
+                "columns": "full",
+                "rows": 6
+              },
+              "graph_span": "24h",
+              "update_interval": "1min",
+              "stacked": true,
+              "header": {
+                "show": true,
+                "title": "Grid import and export - 24 hours",
+                "show_states": true,
+                "colorize_states": true,
+                "standard_format": true
+              },
+              "yaxis": [
+                {
+                  "decimals": 1,
+                  "apex_config": {
+                    "title": {
+                      "text": "kW"
+                    }
+                  }
+                }
+              ],
+              "apex_config": {
+                "chart": {
+                  "height": 280
+                },
+                "plotOptions": {
+                  "bar": {
+                    "columnWidth": "85%",
+                    "borderRadius": 2
+                  }
+                }
+              },
+              "series": [
+                {
+                  "entity": "{{GRID_EXPORT}}",
+                  "name": "Export",
+                  "type": "column",
+                  "color": "#fbc02d",
+                  "stack_group": "grid",
+                  "group_by": {
+                    "func": "avg",
+                    "duration": "15min",
+                    "fill": "zero"
+                  }
+                },
+                {
+                  "entity": "{{GRID_IMPORT}}",
+                  "name": "Import",
+                  "type": "column",
+                  "color": "#2196f3",
+                  "invert": true,
+                  "stack_group": "grid",
+                  "group_by": {
+                    "func": "avg",
+                    "duration": "15min",
+                    "fill": "zero"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Prices",
+      "path": "prices",
+      "icon": "mdi:currency-eur",
+      "type": "sections",
+      "max_columns": 4,
+      "dense_section_placement": true,
+      "sections": [
+        {
+          "type": "grid",
+          "column_span": 2,
+          "cards": [
+            {
+              "type": "heading",
+              "heading": "Spot price",
+              "heading_style": "title",
+              "icon": "mdi:transmission-tower-export"
+            },
+            {
+              "type": "tile",
+              "entity": "{{SPOT_PRICE_NOW}}",
+              "name": "Current price",
+              "color": "blue",
+              "vertical": false
+            },
+            {
+              "type": "tile",
+              "entity": "{{SPOT_PRICE_NEXT}}",
+              "name": "Next period",
+              "color": "indigo",
+              "vertical": false
+            },
+            {
+              "type": "tile",
+              "entity": "{{SPOT_PRICE_LOW}}",
+              "name": "Daily low",
+              "color": "green",
+              "vertical": false
+            },
+            {
+              "type": "tile",
+              "entity": "{{SPOT_PRICE_HIGH}}",
+              "name": "Daily high",
+              "color": "red",
+              "vertical": false
+            },
+            {
+              "type": "tile",
+              "entity": "{{MONTHLY_GRID_COST}}",
+              "name": "Grid cost this month",
+              "color": "green",
+              "vertical": false
+            }
+          ]
+        },
+        {
+          "type": "grid",
+          "column_span": 2,
+          "cards": [
+            {
+              "type": "heading",
+              "heading": "Price curve",
+              "heading_style": "title",
+              "icon": "mdi:chart-bar"
+            },
+            {
+              "type": "custom:apexcharts-card",
+              "grid_options": {
+                "columns": "full",
+                "rows": 7
+              },
+              "graph_span": "24h",
+              "span": {
+                "start": "day"
+              },
+              "update_interval": "5min",
+              "header": {
+                "show": true,
+                "title": "Spot market price",
+                "show_states": true,
+                "colorize_states": true
+              },
+              "yaxis": [
+                {
+                  "decimals": 3,
+                  "min": "~0",
+                  "apex_config": {
+                    "title": {
+                      "text": "EUR/kWh"
+                    }
+                  }
+                }
+              ],
+              "series": [
+                {
+                  "entity": "{{SPOT_PRICE_NOW}}",
+                  "name": "Price",
+                  "type": "column",
+                  "color": "#42a5f5",
+                  "stroke_width": 0,
+                  "float_precision": 5,
+                  "group_by": {
+                    "duration": "15min",
+                    "func": "last",
+                    "fill": "null"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Forecast",
+      "path": "forecast",
+      "icon": "mdi:weather-partly-cloudy",
+      "type": "sections",
+      "max_columns": 4,
+      "dense_section_placement": true,
+      "sections": [
+        {
+          "type": "grid",
+          "column_span": 2,
+          "cards": [
+            {
+              "type": "heading",
+              "heading": "Solar forecast",
+              "heading_style": "title",
+              "icon": "mdi:crystal-ball"
+            },
+            {
+              "type": "tile",
+              "entity": "{{SOLAR_FORECAST_NOW}}",
+              "name": "Forecast now",
+              "color": "green",
+              "vertical": false
+            },
+            {
+              "type": "tile",
+              "entity": "{{PV_TOTAL}}",
+              "name": "Actual now",
+              "color": "amber",
+              "vertical": false
+            },
+            {
+              "type": "tile",
+              "entity": "{{SOLAR_FORECAST_CURRENT_HOUR}}",
+              "name": "Current hour",
+              "color": "yellow",
+              "vertical": false
+            },
+            {
+              "type": "tile",
+              "entity": "{{SOLAR_FORECAST_NEXT_HOUR}}",
+              "name": "Next hour",
+              "color": "lime",
+              "vertical": false
+            },
+            {
+              "type": "tile",
+              "entity": "{{SOLAR_FORECAST_TODAY}}",
+              "name": "Today",
+              "color": "amber",
+              "vertical": false
+            },
+            {
+              "type": "tile",
+              "entity": "{{SOLAR_FORECAST_TOMORROW}}",
+              "name": "Tomorrow",
+              "color": "green",
+              "vertical": false
+            }
+          ]
+        },
+        {
+          "type": "grid",
+          "column_span": 2,
+          "cards": [
+            {
+              "type": "heading",
+              "heading": "Weather",
+              "heading_style": "title",
+              "icon": "mdi:weather-cloudy-clock"
+            },
+            {
+              "type": "weather-forecast",
+              "entity": "{{WEATHER_ENTITY}}",
+              "name": "Home",
+              "forecast_type": "hourly",
+              "show_current": true,
+              "show_forecast": true,
+              "grid_options": {
+                "columns": "full",
+                "rows": 12
+              }
+            }
+          ]
+        },
+        {
+          "type": "grid",
+          "column_span": 4,
+          "cards": [
+            {
+              "type": "custom:apexcharts-card",
+              "section_mode": true,
+              "grid_options": {
+                "columns": "full",
+                "rows": 7
+              },
+              "graph_span": "24h",
+              "span": {
+                "start": "day"
+              },
+              "update_interval": "5min",
+              "header": {
+                "show": true,
+                "title": "Actual solar vs forecast",
+                "show_states": true,
+                "colorize_states": true,
+                "standard_format": true
+              },
+              "yaxis": [
+                {
+                  "min": 0,
+                  "decimals": 1,
+                  "apex_config": {
+                    "title": {
+                      "text": "kW"
+                    }
+                  }
+                }
+              ],
+              "series": [
+                {
+                  "entity": "{{PV_TOTAL}}",
+                  "name": "Actual",
+                  "type": "area",
+                  "color": "#fbc02d",
+                  "opacity": 0.35,
+                  "stroke_width": 2,
+                  "group_by": {
+                    "func": "avg",
+                    "duration": "15min",
+                    "fill": "zero"
+                  }
+                },
+                {
+                  "entity": "{{SOLAR_FORECAST_NOW}}",
+                  "name": "Forecast",
+                  "type": "line",
+                  "color": "#43a047",
+                  "curve": "stepline",
+                  "stroke_width": 3,
+                  "transform": "return Number(x) / 1000;",
+                  "group_by": {
+                    "func": "avg",
+                    "duration": "15min",
+                    "fill": "last"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "PV Strings",
+      "path": "strings",
+      "icon": "mdi:solar-panel-large",
+      "type": "sections",
+      "max_columns": 4,
+      "dense_section_placement": true,
+      "sections": [
+        {
+          "type": "grid",
+          "column_span": 2,
+          "cards": [
+            {
+              "type": "heading",
+              "heading": "Live string power",
+              "heading_style": "title",
+              "icon": "mdi:solar-power-variant"
+            },
+            {
+              "type": "gauge",
+              "name": "PV1",
+              "entity": "{{PV_STRING_1}}",
+              "min": 0,
+              "max": 2,
+              "needle": true
+            },
+            {
+              "type": "gauge",
+              "name": "PV2",
+              "entity": "{{PV_STRING_2}}",
+              "min": 0,
+              "max": 6,
+              "needle": true
+            },
+            {
+              "type": "gauge",
+              "name": "PV3",
+              "entity": "{{PV_STRING_3}}",
+              "min": 0,
+              "max": 3,
+              "needle": true
+            },
+            {
+              "type": "tile",
+              "entity": "{{PV_TOTAL}}",
+              "name": "Total solar",
+              "icon": "mdi:solar-power",
+              "color": "amber",
+              "vertical": false
+            },
+            {
+              "type": "tile",
+              "entity": "{{SOLAR_FORECAST_NOW}}",
+              "name": "Forecast now",
+              "icon": "mdi:weather-sunny",
+              "color": "yellow",
+              "vertical": false
+            }
+          ]
+        },
+        {
+          "type": "grid",
+          "column_span": 2,
+          "cards": [
+            {
+              "type": "heading",
+              "heading": "Roof and sun",
+              "heading_style": "title",
+              "icon": "mdi:sun-angle"
+            },
+            {
+              "type": "custom:solar-roof-card",
+              "title": "Live roof output",
+              "totalEntity": "{{PV_TOTAL}}",
+              "forecastEntity": "{{SOLAR_FORECAST_NOW}}",
+              "sunEntity": "{{SUN_ENTITY}}",
+              "panels": [
+                {
+                  "name": "PV1",
+                  "entity": "{{PV_STRING_1}}",
+                  "max": 2
+                },
+                {
+                  "name": "PV2",
+                  "entity": "{{PV_STRING_2}}",
+                  "max": 6
+                },
+                {
+                  "name": "PV3",
+                  "entity": "{{PV_STRING_3}}",
+                  "max": 3
+                }
+              ],
+              "grid_options": {
+                "columns": "full",
+                "rows": 12
+              }
+            }
+          ]
+        },
+        {
+          "type": "grid",
+          "column_span": 4,
+          "cards": [
+            {
+              "type": "heading",
+              "heading": "String history",
+              "heading_style": "title",
+              "icon": "mdi:chart-line"
+            },
+            {
+              "type": "custom:apexcharts-card",
+              "section_mode": true,
+              "graph_span": "24h",
+              "update_interval": "30s",
+              "header": {
+                "show": true,
+                "title": "PV strings - 24 hours",
+                "show_states": true,
+                "colorize_states": true
+              },
+              "yaxis": [
+                {
+                  "decimals": 2,
+                  "apex_config": {
+                    "title": {
+                      "text": "kW"
+                    }
+                  }
+                }
+              ],
+              "apex_config": {
+                "chart": {
+                  "height": 320,
+                  "toolbar": {
+                    "show": false
+                  }
+                },
+                "stroke": {
+                  "width": 3,
+                  "curve": "smooth"
+                },
+                "legend": {
+                  "show": true,
+                  "position": "bottom"
+                }
+              },
+              "series": [
+                {
+                  "entity": "{{PV_STRING_1}}",
+                  "name": "PV1",
+                  "type": "line",
+                  "group_by": {
+                    "func": "avg",
+                    "duration": "1min"
+                  }
+                },
+                {
+                  "entity": "{{PV_STRING_2}}",
+                  "name": "PV2",
+                  "type": "line",
+                  "group_by": {
+                    "func": "avg",
+                    "duration": "1min"
+                  }
+                },
+                {
+                  "entity": "{{PV_STRING_3}}",
+                  "name": "PV3",
+                  "type": "line",
+                  "group_by": {
+                    "func": "avg",
+                    "duration": "1min"
+                  }
+                }
+              ],
+              "grid_options": {
+                "columns": "full",
+                "rows": 8
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
